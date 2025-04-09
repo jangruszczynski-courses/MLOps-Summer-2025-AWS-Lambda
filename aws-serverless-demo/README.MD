@@ -9,7 +9,7 @@ The Lambda function should be triggered when an image is uploaded to an S3 bucke
 
 ### Basic steps you may follow.
 1. Install [AWS CLI](https://aws.amazon.com/cli/)
-2. Create AWS account.
+2. Create an AWS account.
 3. Go to AWS IAM  and create a new user in user section. Assign Admin Policy to him.
 4. Generate an Access key for that user.
 5. Configure access for CLI to your AWS account (CLI will authorize boto3 package / or Python AWS CDK)
@@ -17,19 +17,52 @@ The Lambda function should be triggered when an image is uploaded to an S3 bucke
 aws configure
 ```
 6. Write the Lambda handler, where the inference will be performed. 
-The function should: Download an image from S3, perform inference, save the result back to S3.
+The function should: Accept event when an image is uploaded to s3, Download an image from S3, perform inference, save the result back to S3.
 Remember that the function name should follow specific convention, unless you change entrypoint (CMD) in the Dockerfile
 7. Create a Dockerfile that will be used to containerize your code. In that Dockerfile you should pre-download the model weights in a separate python script / or just copy the wieghts.
 Useful [Link](https://aws.amazon.com/blogs/compute/deploying-machine-learning-models-with-serverless-templates/)
 8. Build your docker
+```bash
+docker build -t <repository_name>:<tag> .
+docker build -t testowe_repo:newest .
+```
+
 9. Test your docker image
 ```bash
 docker run -p 9000:8080 <repository_name>:<tag>
+docker run -p 9000:8080 testowe_repo:newest
+```
+```bash
 curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{}'
 ```
+9. Create a repository in AWS ECR (Elastic Container Registry) to store your docker image.
+```bash
+aws ecr create-repository --repository-name <repository_name>
+```
 10. Authorize the docker for access to AWS ECR 1
+```
+aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <account_id>.dkr.ecr.<region>.amazonaws.com
+aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 008971672243.dkr.ecr.eu-west-2.amazonaws.com
+```
 11. Push the image to AWS ECR
+```bash
+docker tag <repository_name>:<tag> <account_id>.dkr.ecr.<region>.amazonaws.com/<repository_name>:<tag>
+docker push <account_id>.dkr.ecr.<region>.amazonaws.com/<repository_name>:<tag>
+
+docker tag testowe_repo:newest 008971672243.dkr.ecr.eu-west-2.amazonaws.com/xd_repozytorium:latest
+docker push 008971672243.dkr.ecr.eu-west-2.amazonaws.com/xd_repozytorium:latest
+
+docker tag testowe_repo:newest 008971672243.dkr.ecr.eu-west-2.amazonaws.com/xd_repozytorium:newest
+docker push 008971672243.dkr.ecr.eu-west-2.amazonaws.com/xd_repozytorium:newest
+
+docker tag testowe_repo:newest2 008971672243.dkr.ecr.eu-west-2.amazonaws.com/repozytorium:latest
+docker push 008971672243.dkr.ecr.eu-west-2.amazonaws.com/repozytorium:latest
+
+docker tag testowe_repo:newest 008971672243.dkr.ecr.eu-west-2.amazonaws.com/testowe_repo:newest
+docker push 008971672243.dkr.ecr.eu-west-2.amazonaws.com/testowe_repo:newest
+```
 12. Create the AWS Lambda with an appropriate IAM role (with appropriate policies assigned to said role.)
+Look at create_lambda.py file. 
 13. Create the S3 on-upload trigger.
 In the AWS Console you can search for all said resources typing ECR for instance in the search bar.
 
@@ -48,3 +81,4 @@ What caused problems? What took you the most time? General experience & any usef
 
 
 
+15 maja przenosimy na 8 maja

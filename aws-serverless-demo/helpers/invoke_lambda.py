@@ -35,8 +35,11 @@ def invoke_lambda(lambda_url:str, payload: dict, headers=None):
 
 if __name__ == "__main__":
     payload = {}
-    # function_name = 'hello_world_lambda' 
-    # invoke_lambda_using_boto3(function_name, payload)
+    function_name = 'testowa_lambda_xd_1' 
+    invoke_lambda_using_boto3(function_name, payload)
 
-    lambda_url = "https://jtlek3cslf3z5u6ief35fv76uy0yuhlv.lambda-url.eu-west-2.on.aws/"
+    # lambda_url = "https://jtlek3cslf3z5u6ief35fv76uy0yuhlv.lambda-url.eu-west-2.on.aws/"
+    # lambda_url = "https://5gfoxmwvtjqokp63w5zhs3tjeu0wpzya.lambda-url.eu-west-2.on.aws/"
+    
+    lambda_url = "https://qcs6h3gsigqg6bslp4zwd7a4640rgkht.lambda-url.eu-west-2.on.aws/"
     invoke_lambda(lambda_url, payload)

@@ -41,14 +41,14 @@ def create_lambda_function(function_name, image_uri, role_arn):
         PackageType='Image',
         Publish=True,
         Timeout=10,
-        MemorySize=128
+        MemorySize=1024
     )
     print(f"Lambda function '{function_name}' created.")
     return response
 
 
 if __name__ == "__main__":
-    repository = "hello-world-lambda"
+    repository = "testowe_repo"
     
     latest_image = get_latest_image(repository)
     print(f"Latest Image Digest: {latest_image['imageDigest']}")
@@ -60,4 +60,4 @@ if __name__ == "__main__":
     # Replace with your IAM Role ARN and ECR Image URI
     role_arn = 'arn:aws:iam::008971672243:role/Basic-Lambda-Role'
 
-    create_lambda_function('hello_world_lambda2', image_uri, role_arn=role_arn)
+    create_lambda_function('testowa_lambda_xd_1', image_uri, role_arn=role_arn)

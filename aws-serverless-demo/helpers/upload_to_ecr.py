@@ -36,7 +36,7 @@ def authenticate_ecr(region, aws_account_id):
 def build_and_push_docker_image(repository_uri, repository_name, image_tag):
     print("Building Docker image:")
     docker_client.images.build(
-        path="/home/ubuntu/janek/aws-serverless-demo/",
+        path="/home/ubuntu/janek/MLOps/aws-serverless-demo/",
         tag=f"{repository_name}:{image_tag}",
     )
     print("Docker image success")
@@ -54,11 +54,11 @@ def build_and_push_docker_image(repository_uri, repository_name, image_tag):
 
 
 if __name__ == "__main__":
-    repository_name = "hello-world-lambda"
+    repository_name = "xd_repozytorium"
     image_tag = "latest"
 
     repository_uri = create_or_get_ecr_repository(repository_name)
-    # print(f"Repository URI: {repository_uri}")
+    print(f"Repository URI: {repository_uri}")
     authenticate_ecr(REGION, aws_account_id)
 
     build_and_push_docker_image(repository_uri, repository_name, image_tag)
