@@ -62,6 +62,7 @@ Your solution must implement the following workflow:
   - Challenges encountered during implementation
   - Time-consuming aspects of the project
   - General experience and useful techniques discovered
+- 0.5 bonus points will be granted for those of you who will decide to implement the task using AWS CDK.
 
 ## Group Work
 - The project can be completed in pairs.
